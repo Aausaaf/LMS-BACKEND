@@ -20,12 +20,12 @@ const getAssignments = async(req,res) => {
             if(user?.userType?.toLowerCase() == "admin"|| user?.userType?.toLowerCase() == "teacher")
             {
                let Assignments = await Assignment.find({course:req.params.course})
-               return res.status(200).send({assignment:Assignments})
+               return res.status(200).send(Assignments)
             }
             else
             {
                let Assignments = await Assignment.find({user:decoded._id})
-               return res.status(200).send({assignment:Assignments})
+               return res.status(200).send(Assignments)
 
             }
         }
@@ -68,32 +68,33 @@ const createAssignments = async(req,res) => {
           {
               if(user?.userType?.toLowerCase() == "admin" || user?.userType?.toLowerCase() == "teacher")
               {
-                let course = await Course.findOne({name: req.body.courseName.toLowerCase()})
+                let course = await Course.findOne({_id: req.body.course})
                 if(course)
                 {
                    let data = req.body
-                   if(data.startDate.length == 0 || !data.startDate)
+                   if(data?.startDate?.length == 0 || !data?.startDate)
                    {
                     return res.status(403).send({ message: "Please provide a start date"})
                    }
-                   if(data.endDate.length == 0 || !data.endDate)
+                   if(data?.endDate?.length == 0 || !data?.endDate)
                    {
                     return res.status(403).send({ message: "Please provide a end date"})
                    }
-                   if(data.content.length == 0 || !data.content)
+                   if(data?.content?.length == 0 || !data?.content)
                    {
                     return res.status(403).send({ message: "Please provide a content"})
                    }
                      let key = uuidv4()
-                   course?.user?.map(async (datas)=>{
+                    course?.user?.map(async (datas)=>{
                      let newAssignment =  await Assignment({
-                       course:data.courseName,
+                       course:req.body.course,
                        user:datas,
-                       heading:data?.heading?.length>0 ? data.heading :"",
+                       title:data?.title?.length>0 ? data.title :"",
                        content : data.content,
                        startDate:data.startDate,
                        endDate:data.endDate,
-                       uniquekey : key
+                       uniquekey : key,
+                       points:data.points
 
                       })
 

@@ -23,12 +23,12 @@ const getQuiz = async(req,res) => {
             if(user?.userType?.toLowerCase() == "admin"|| user?.userType?.toLowerCase() == "teacher")
             {
                let quiz = await Quiz.find({course:req.params.course})
-               return res.status(200).send({quiz:quiz})
+               return res.status(200).send(quiz)
             }
             else
             {
                let quiz = await Quiz.find({user:decoded._id})
-               return res.status(200).send({quiz:quiz})
+               return res.status(200).send(quiz)
 
             }
         }
@@ -71,7 +71,7 @@ const createQuiz = async(req,res) => {
           {
               if(user?.userType?.toLowerCase() == "admin" || user?.userType?.toLowerCase() == "teacher")
               {
-                let course = await Course.findOne({name: req.body.courseName.toLowerCase()})
+                let course = await Course.findOne({_id: req.body.course})
                 if(course)
                 {
                    let data = req.body
@@ -83,20 +83,22 @@ const createQuiz = async(req,res) => {
                    {
                     return res.status(403).send({ message: "Please provide a end date"})
                    }
-                   if(data.content.length == 0 || !data.content)
-                   {
-                    return res.status(403).send({ message: "Please provide a content"})
-                   }
+                //    if(data.content.length == 0 || !data.content)
+                //    {
+                //     return res.status(403).send({ message: "Please provide a content"})
+                //    }
                      let key = uuidv4()
+                     console.log(data)
                    course?.user?.map(async (datas)=>{
                      let newQuiz =  await Quiz({
-                       course:data.courseName,
+                       course:data.course,
                        user:datas,
-                       heading:data?.heading?.length>0 ? data.heading :"",
+                       title:data?.title,
                        content : data.content,
                        startDate:data.startDate,
                        endDate:data.endDate,
-                       uniquekey : key
+                       uniquekey : key,
+                       points: data.points
 
                       })
 
@@ -162,7 +164,7 @@ const createQuiz = async(req,res) => {
             
               if(user?.userType?.toLowerCase() == "admin" || user?.userType?.toLowerCase() == "teacher")
               {
-                let course = await Course.findOne({name: req.body.courseName.toLowerCase()})
+                let course = await Course.findOne({name: req.body.courseName})
                 if(course)
                 {
                  
@@ -188,7 +190,7 @@ const createQuiz = async(req,res) => {
               {
                 if(data?.content?.getPoints)
                 {
-                   data?.content?.getPoints = ""
+                   data.content={...data?.content,getPoints:""}
                 }
                 let Userdata = {
                     content: data.content

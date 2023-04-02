@@ -30,7 +30,7 @@ const CourseSchema = new mongoose.Schema({
             type: String,
         },
         syllabus:{
-            type: Array,
+            type: String,
 
         },
         user:{
@@ -46,7 +46,7 @@ const CourseSchema = new mongoose.Schema({
             type: String,
         },
         assignment:{
-            type: Array,
+            type: String,
         },
         quiz:{
             type: Array,

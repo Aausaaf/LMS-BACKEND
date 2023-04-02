@@ -8,24 +8,12 @@ const quizSchema = new mongoose.Schema({
     user:{
         type:String
     },
-    heading:{
+    title:{
         type:String
     },
     content:{
-        type:[{
-           title:String,
-           image:String,
-           upload:String,
-            video:String,
-            description:String,
-            points:String,
-            getPoints:String,
-            answerOption:[{
-                ans:String
-
-            }],
-            answer:String
-        }]
+       type:Array,
+       required:true,
     },
     startDate:{
         type:String,
@@ -37,11 +25,14 @@ const quizSchema = new mongoose.Schema({
     uniquekey:{
         type:String,
         required:true
+    },
+    points:{
+        type:String,
     }
     
 })
 
-const Quiz = mongoose.model('Assignment', quizSchema)
+const Quiz = mongoose.model('Quiz', quizSchema)
 
 module.exports = {
     Quiz

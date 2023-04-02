@@ -8,7 +8,7 @@ const assignmentSchema = new mongoose.Schema({
     user:{
         type:String
     },
-    heading:{
+    title:{
         type:String
     },
     content:{

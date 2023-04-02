@@ -1,16 +1,37 @@
 const express = require('express')
+const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
+const { connectMongoDb } = require('./Database')
 const cors = require('cors')
 const { listen } = require('./env')
-const { connectMongoDb } = require('./Database')
 const { singupRoute } = require('./Routes/User')
-const http = require('http');
-const app = express()
 const socketio = require('socket.io');
+const http = require('http');
 const { Descussion } = require('./Database/discussion')
+const { courseRoute } = require('./Routes/Course');
+const { lectureRoutes } = require('./Routes/lecture');
+const { assignmentRoutes } = require('./Routes/assignment');
+const { quizRoutes } = require('./Routes/quiz');
+const { gradeRoutes } = require('./Routes/Grade');
+const { syllabusRoutes } = require('./Routes/Syllabus');
+const { modulesRoutes } = require('./Routes/modules');
+
+
+const app = express()
 app.use(cors())
 app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.set("view engine", "ejs");
+ app.use(fileUpload())
 app.use(singupRoute)
-
+app.use(courseRoute)
+app.use(lectureRoutes)
+app.use(assignmentRoutes)
+app.use(quizRoutes)
+app.use(gradeRoutes)
+app.use(syllabusRoutes)
+app.use(modulesRoutes)
 
 
 

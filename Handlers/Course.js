@@ -17,7 +17,7 @@ const postCourseData = async(req,res) => {
             let coursebody = req.body
             let {name,price,description,category,duration} = req.body
             let file = req.files
-    
+            console.log(req.body)
             if(file)
             {
                 let Imagedata =  new Buffer(file.image.data).toString('base64')
@@ -32,7 +32,7 @@ const postCourseData = async(req,res) => {
                 if(name?.length !=0 && price?.length !=0 && description?.length != 0 && category?.length!=0 && duration?.length!=0)
                 {
                    let data =  await Course ({
-                         name:name.toLowerCase(),
+                         name:name?.toLowerCase(),
                          price:price,
                          category:category,
                         description:description,
@@ -94,7 +94,7 @@ const postCourseData = async(req,res) => {
           {
             if(coursebody.user)
             {
-                      let users = [...checkCourse.user,coursebody.user]
+                      let users = [...checkCourse.user,coursebody.user?.toLowerCase()]
                       coursebody.user = users
             }
             if(file)
